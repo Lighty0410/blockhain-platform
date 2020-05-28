@@ -4,6 +4,8 @@ pub mod node_behaviour;
 
 use crate::platform::node::Node;
 use crate::platform::node_behaviour::Behaviour;
+
+use anyhow::Result;
 use async_std::{io, task};
 use futures::{
     future,
@@ -11,19 +13,10 @@ use futures::{
     task::{Context, Poll},
     AsyncBufReadExt,
 };
-use libp2p::{
-    floodsub::{self, Floodsub, FloodsubEvent, Topic},
-    identity,
-    identity::{Keypair, PublicKey},
-    mdns::{Mdns, MdnsEvent},
-    swarm::NetworkBehaviour,
-    swarm::{ExpandedSwarm, NetworkBehaviourEventProcess},
-    NetworkBehaviour, PeerId, Swarm, Transport,
-};
-use std::error::Error;
+use libp2p::{floodsub::Topic, Swarm};
 
 impl Node<Behaviour> {
-    pub fn run(&mut self, topic: Topic) -> Result<(), Box<dyn Error>> {
+    pub fn run(&mut self, topic: Topic) -> Result<()> {
         let mut stdin = io::BufReader::new(io::stdin()).lines();
         Swarm::listen_on(&mut self.swarm, "/ip4/0.0.0.0/tcp/0".parse()?)?;
 

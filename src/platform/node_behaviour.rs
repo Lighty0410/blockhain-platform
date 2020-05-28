@@ -1,10 +1,8 @@
-use super::model;
-use anyhow::Result;
 use libp2p::{
-    floodsub::{Floodsub, FloodsubEvent, Topic},
+    floodsub::{Floodsub, FloodsubEvent},
     mdns::{Mdns, MdnsEvent},
     swarm::NetworkBehaviourEventProcess,
-    NetworkBehaviour, Swarm,
+    NetworkBehaviour,
 };
 
 #[derive(NetworkBehaviour)]
