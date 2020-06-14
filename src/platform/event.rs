@@ -6,7 +6,7 @@ use libp2p::{
 };
 
 #[derive(NetworkBehaviour)]
-pub struct Behaviour {
+pub struct WithBehaviour {
     pub floodsub: Floodsub,
     pub mdns: Mdns,
 
@@ -15,7 +15,7 @@ pub struct Behaviour {
     pub ignored_member: bool,
 }
 
-impl NetworkBehaviourEventProcess<FloodsubEvent> for Behaviour {
+impl NetworkBehaviourEventProcess<FloodsubEvent> for WithBehaviour {
     fn inject_event(&mut self, event: FloodsubEvent) {
         if let FloodsubEvent::Message(message) = event {
             println!("message: {:?}", String::from_utf8_lossy(&message.data))
@@ -23,7 +23,7 @@ impl NetworkBehaviourEventProcess<FloodsubEvent> for Behaviour {
     }
 }
 
-impl NetworkBehaviourEventProcess<MdnsEvent> for Behaviour {
+impl NetworkBehaviourEventProcess<MdnsEvent> for WithBehaviour {
     fn inject_event(&mut self, event: MdnsEvent) {
         match event {
             MdnsEvent::Discovered(list) => {

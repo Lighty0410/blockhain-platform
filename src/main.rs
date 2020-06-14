@@ -1,18 +1,16 @@
+mod controller;
 mod platform;
-use platform::{model::PeerInfo, node::Node};
+mod routing;
+mod tcp;
 
+use crate::platform::Node;
 use anyhow::Result;
-use libp2p::{floodsub, identity, PeerId};
+use libp2p::floodsub::Topic;
 
 fn main() -> Result<()> {
-    let key_pair = identity::Keypair::generate_ed25519();
-    let peer_id = PeerId::from(key_pair.public());
+    let topic = Topic::new("chat");
 
-    let peer_info = PeerInfo::new(key_pair, peer_id);
-
-    let topic = floodsub::Topic::new("chat");
-
-    let mut node = Node::new(peer_info, &topic.clone())?;
+    let mut node = Node::new(&topic)?;
 
     node.run(topic)?;
 
